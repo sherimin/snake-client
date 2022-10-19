@@ -8,7 +8,7 @@ const conn = connect();
 //stdin.on("data", handleUserInput);
 
 
-setupInput();
+setupInput(conn);
 
 
 
