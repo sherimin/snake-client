@@ -2,33 +2,35 @@
 const { MOVE_UP_KEY, MOVE_LEFT_KEY, MOVE_DOWN_KEY, MOVE_RIGHT_KEY, MESSAGE_KEY } = require("./constants");
 const msg1 = 'Keep playing!';
 
+const mappings = {
+  w: "Move: up",
+  a: "Move: left",
+  s: "Move: down",
+  d: "Move: right",
+};
 
 const handleUserInput = function(key, conn) {
+  // Short circuit if user does the Ctrl-C key
   if (key === '\u0003') {
     console.log('Exit game.');
     process.exit();
   }
 
-  if (key === MOVE_UP_KEY) {
-    conn.write('Move: up');
-  }
-
-  if (key === MOVE_LEFT_KEY) {
-    conn.write('Move: left');
-  }
-
-  if (key === MOVE_DOWN_KEY) {
-    conn.write('Move: down');
-  }
-
-  if (key === MOVE_RIGHT_KEY) {
-    conn.write('Move: right');
+  // handles all other key inputs
+  if (mappings[key]) {
+    conn.write(mappings[key]);
   }
 
   //display a text
   if (key === MESSAGE_KEY) {
     conn.write('says: ' + msg1);
   }
+  //wait for user to input something
+  process.stdin.on('data', (data) => {
+    //send msg to server
+    data = String(data);
+    client.write(data);
+  });
 
 };
 
